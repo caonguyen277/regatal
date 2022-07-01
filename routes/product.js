@@ -15,6 +15,7 @@ const {
   listBySearch,
   photoProduct,
   productListSearch,
+  StatisticalProduct,
 } = require("../controllers/product");
 const { requireSignin, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -42,7 +43,7 @@ router.get("/categories", listAllCategories);
 router.get("/branches", listAllBranches);
 router.post("/by/search", listBySearch);
 router.get("/product/photo/:productId", photoProduct);
-
+router.get("/statisticalProduct/:month/:userId",requireSignin, isAdmin,StatisticalProduct);
 router.param("userId", userById);
 // whenever there's a 'productId' in the route parameter, call the productById method
 router.param("productId", productById);

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { requireSignin, isAdmin } = require("../controllers/auth");
 const { userById, addOrderToHistory } = require("../controllers/user");
-const { create, listOrders, getStatus, updateStatus, orderById } = require("../controllers/order");
+const { create, listOrders, getStatus, updateStatus, orderById, Statistical } = require("../controllers/order");
 const { decreaseQuantity } = require("../controllers/product");
 
 router.post(
@@ -22,6 +22,7 @@ router.put(
   isAdmin,
   updateStatus
 );
+// router.post('/statictical/:userId',requireSignin, isAdmin, Statistical)
 router.param("userId", userById);
 router.param("orderId", orderById);
 

@@ -36,7 +36,7 @@ exports.createProduct = (req, res) => {
         error: "Image could not be uploaded",
       });
     }
-    console.log(fields,files);
+    console.log(fields, files);
     let product = new Product(fields);
     // checks for image size less than 5mb
     // if greater than 5mb, return error
@@ -322,5 +322,28 @@ exports.decreaseQuantity = (req, res, next) => {
       });
     }
     next();
+  });
+};
+exports.StatisticalProduct = (req, res) => {
+  const array = [];
+  const month = req.params.month;
+  console.log(month);
+  Product.find().exec((err, data) => {
+    if (!err) {
+      
+      data.forEach((el, index) => {
+        if(el.createdAt.toString().includes(month)){
+        array.push({
+          name: el.name.slice(0, 10),
+          sold: el.sold,
+          amount: el.price * el.sold,
+        });
+      }
+      });
+
+      res.status(200).json({ data: array });
+    } else {
+      res.status(400).json({ error: errorHandler(err) });
+    }
   });
 };
