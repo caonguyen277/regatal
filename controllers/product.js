@@ -344,7 +344,7 @@ exports.StatisticalProduct = (req, res) => {
               array.push({
                 _id : item._id,
                 name: item.name.slice(0,10),
-                sold: 1,
+                sold: item.count,
                 amount : item.price,
                 price: item.price
               })}
