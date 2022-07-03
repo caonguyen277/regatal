@@ -88,7 +88,7 @@ exports.deleteComment = (req, res) => {
       })
   }
   exports.listAllCommentTitle = (req,res) =>{
-    Comment.find({commentTitle: 1}).populate("user").populate("product").limit(5).exec((err,data) => {
+    Comment.find({commentTitle: 1}).populate("user", "name").populate("product","_id name").limit(5).exec((err,data) => {
       if(!err){
        return res.status(200).json(data)
       }
