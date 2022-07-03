@@ -332,12 +332,13 @@ exports.StatisticalProduct = (req, res) => {
     if (!err) {
       data.forEach((el, i) => {
         if(el.createdAt.toString().includes(month)){
+          console.log(el);
           el.products.forEach((item,i) => {
               let sold = 1;
               let index = array.findIndex((product)=> product._id.toString() === item._id.toString());
               console.log(index);
               if(index !== -1){
-                array[index].sold++;
+                array[index].sold += item.count;
                 array[index].amount = array[index].sold * array[index].price;
               }else{
               array.push({
