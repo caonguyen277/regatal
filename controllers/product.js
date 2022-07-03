@@ -3,6 +3,7 @@ const _ = require("lodash");
 const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const { Order } = require("../models/order");
 
 exports.productById = (req, res, next, id) => {
   // find the product in the Product model using the findById() method
@@ -327,20 +328,36 @@ exports.decreaseQuantity = (req, res, next) => {
 exports.StatisticalProduct = (req, res) => {
   const array = [];
   const month = req.params.month;
-  console.log(month);
-  Product.find().exec((err, data) => {
+  Order.find().exec((err, data) => {
     if (!err) {
-      
-      data.forEach((el, index) => {
+      data.forEach((el, i) => {
         if(el.createdAt.toString().includes(month)){
-        array.push({
-          name: el.name.slice(0, 10),
-          sold: el.sold,
-          amount: el.price * el.sold,
-        });
+          el.products.forEach((item,i) => {
+              let sold = 1;
+              let index = array.findIndex((product)=> product._id.toString() === item._id.toString());
+              console.log(index);
+              if(index !== -1){
+                array[index].sold++;
+                array[index].amount = array[index].sold * array[index].price;
+              }else{
+              array.push({
+                _id : item._id,
+                name: item.name.slice(0,10),
+                sold: 1,
+                amount : item.price,
+                price: item.price
+              })}
+            }
+          )
+          // array.push([...el.products])
+        // array.push({
+        //   name: el.name.slice(0, 10),
+        //   sold: el.sold,
+        //   amount: el.price * el.sold,
+        // });
       }
       });
-
+      // console.log(array);
       res.status(200).json({ data: array });
     } else {
       res.status(400).json({ error: errorHandler(err) });

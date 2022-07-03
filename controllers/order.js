@@ -64,22 +64,3 @@ exports.updateStatus = (req, res) => {
     }
   );
 };
-// exports.Statistical = (req,res) => {
-//   const month = req.body.month;
-//   Order.find().exec((err,data) => {
-//     if(!err){
-//     const newData = data.filter((el,index) => {
-      
-//        const result = String(el.createdAt);
-//       //  console.log(el.createdAt.toString())
-//         if(result.includes(month)){
-          
-//           return el;
-//         }
-//      })
-//      res.status(200).json(newData);
-//     }
-//     else
-//     res.status(400).json(err);
-//   })
-// }
