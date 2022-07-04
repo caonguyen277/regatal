@@ -81,7 +81,7 @@ exports.addOrderToHistory = (req, res, next) => {
 exports.history = (req, res) => {
   Order.find({ user: req.profile._id })
     .populate("user", "_id name")
-    .sort("-created")
+    .sort("-createdAt")
     .exec((err, orders) => {
       if (!err) {
         res.status(200).json(orders);
