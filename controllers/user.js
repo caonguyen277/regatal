@@ -79,12 +79,18 @@ exports.addOrderToHistory = (req, res, next) => {
 };
 
 exports.history = (req, res) => {
+  const page = parseInt(req.query.page);
+  const perPage = parseInt(req.query.perPage);
   Order.find({ user: req.profile._id })
     .populate("user", "_id name")
     .sort("-createdAt")
+    .limit(perPage)
+    .skip(perPage * (page - 1))
     .exec((err, orders) => {
       if (!err) {
-        res.status(200).json(orders);
+        Order.find({ user: req.profile._id }).exec((err,allData) => {
+          return res.status(200).json({data : orders, totalRow : allData.length});
+        })
       } else {
         res.status(404).json({ error: errorHandler(err) });
       }
