@@ -54,7 +54,7 @@ exports.createProduct = (req, res) => {
     product.save((err, result) => {
       if (!err) {
         res.status(200).json({
-          message: "Product deleted successfully",
+          message: "Product create successfully",
           result,
         });
       } else {

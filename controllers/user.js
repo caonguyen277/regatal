@@ -28,14 +28,22 @@ exports.update = (req, res) => {
     // find the user by id
     { _id: req.profile._id },
     // set the incoming data to request body
-    { name: req.body.name, email: req.body.email,password: req.body.password },
+    {$set: req.body},
+    // { name: req.body.name, email: req.body.email,password: req.body.password },
     // set new data to be true
     { new: true },
     (err, update) => {
       if (!err) {
+        update.password = req.body.password;
+        update.save((err,data) => {
+          if(err)
+          return res.status(401).json({
+            error: "Not authorized",
+          });
         update.hashed_password = undefined;
         update.salt = undefined;
         res.status(200).json(update);
+        })
       } else {
         res.status(401).json({
           error: "Not authorized",
