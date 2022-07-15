@@ -104,3 +104,15 @@ exports.history = (req, res) => {
       }
     });
 };
+exports.checkOrder = (req, res) => {
+  const productId = req.body.productId;
+  req.profile.hashed_password = undefined;
+  req.profile.salt = undefined;
+  let result = false;
+  req.profile.history.forEach((el,index) => {
+    if(el._id === productId){
+      result = true;
+    }
+  })
+  return res.status(200).json(result);
+};

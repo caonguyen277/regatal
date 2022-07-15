@@ -345,7 +345,7 @@ exports.StatisticalProduct = (req, res) => {
                 _id : item._id,
                 name: item.name.slice(0,10),
                 sold: item.count,
-                amount : item.price,
+                amount : item.count * item.price,
                 price: item.price
               })}
             }
