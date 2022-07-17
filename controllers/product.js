@@ -343,7 +343,7 @@ exports.StatisticalProduct = (req, res) => {
               }else{
               array.push({
                 _id : item._id,
-                name: item.name,
+                name: item.name.slice(0,5),
                 sold: item.count,
                 amount : item.count * item.price,
                 price: item.price
