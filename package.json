@@ -7,7 +7,7 @@
     "node": "16.14.2"
   },
   "scripts": {
-    "start": "run app.js"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
