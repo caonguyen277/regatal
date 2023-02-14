@@ -22,7 +22,7 @@ router.post("/subFavourite/:productId/:userId", subFavouriteProduct);
 //   "/updateBranch/:branchId/:userId",
 //   requireSignin,
 //   isAdmin,
-//   updateBranch
+//   updateBranch 
 // );
 // router.delete(
 //   "/deleteBranch/:branchId/:userId",

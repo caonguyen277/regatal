@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 30000,
+      max: 1000000,
     },
     category: {
       type: ObjectId,
@@ -62,7 +62,7 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     photo: {
-      data: Buffer,
+      data: Array,
       contentType: String,
     },
     shipping: {

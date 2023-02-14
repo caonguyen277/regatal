@@ -23,7 +23,7 @@ exports.productById = (req, res, next, id) => {
 };
 
 exports.readProduct = (req, res) => {
-  req.product.photo = undefined;
+  // req.product.photo = undefined;
   // sends back a json response of req.product
   return res.status(200).json(req.product);
 };
@@ -31,38 +31,67 @@ exports.readProduct = (req, res) => {
 exports.createProduct = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
+  form.multiples = true;
+  // form.maxFieldsSize = 10 * 1024 * 1024;
   form.parse(req, (err, fields, files, price) => {
-    if (err) {
+    if (err) {  
       return res.status(400).json({
         error: "Image could not be uploaded",
       });
     }
-    console.log(fields, files);
     let product = new Product(fields);
     // checks for image size less than 5mb
     // if greater than 5mb, return error
-    if (files.photo) {
-      if (files.photo.size > 5000000) {
-        return res.status(400).json({
-          error: "Image should be less than 1mb in size",
-        });
-      }
-      product.photo.data = fs.readFileSync(files.photo.path);
-      product.photo.contentType = files.photo.type;
+    console.log(fields)
+    console.log(files);
+    let arrayOfFile = files["photo"];  
+    if(arrayOfFile.length > 0){
+      const filePath = [];
+      arrayOfFile.forEach((el,index) => {
+        console.log(el.path);
+        filePath.push(`upload_${el.path.split("_")[1]}`);
+      });
+      console.log(filePath);
+      // let readFileArray = [];
+      // filePath.forEach((el,index) => {
+      //   let readFile = fs.readFileSync(el);
+      //   readFileArray.push(readFile);
+      // })
+      product.photo.data = [...filePath];
+      product.photo.contentType = "image/*";
+      
+      product.save((err, result) => {
+        if (!err) {
+          res.status(200).json({
+            message: "Product create successfully",
+            result,
+          });
+        } else {
+          res.status(400).json({
+            error: errorHandler(err),
+            message: "Lỗi"
+          });
+        }
+      });
+    }else{
+      res.status(200).json({
+        result: "failed",
+        data:{},
+        numberOfImages: 0,
+        message : "No images to upload!"
+      });
     }
-    // save the product, if error => response with error message
-    product.save((err, result) => {
-      if (!err) {
-        res.status(200).json({
-          message: "Product create successfully",
-          result,
-        });
-      } else {
-        res.status(400).json({
-          error: errorHandler(err),
-        });
-      }
-    });
+    // if (files.photo) {
+    //   if (files.photo.size > 5000000) {
+    //     return res.status(400).json({
+    //       error: "Image should be less than 1mb in size",
+    //     });
+    //   }
+    //   product.photo.data = fs.readFileSync(files.photo.path);
+    //   product.photo.contentType = files.photo.type;
+    // }
+    // // save the product, if error => response with error message
+    
   });
 };
 
@@ -135,8 +164,6 @@ exports.listAllProducts = (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 20;
 
   Product.find()
-    .select("-photo")
-    // call populate() method to populate the category property
     .populate("category", "branch")
     // call sort() method to sort products by 'sortBy' and 'order'
     .sort([[sortBy, order]])
@@ -251,7 +278,6 @@ exports.listBySearch = (req, res) => {
   }
   // find products based on the findArgs object
   Product.find(findArgs)
-    .select("-photo")
     .populate("category", "branch")
     .sort([[sortBy, order]])
     .skip(skip)
@@ -272,10 +298,19 @@ exports.listBySearch = (req, res) => {
 
 exports.photoProduct = (req, res, next) => {
   // Check to see if photo exists in req.product
+  const filePath = `C://Users//Admin//AppData//Local//Temp//${req.params.path}`;
+  console.log(filePath);
   if (req.product.photo.data) {
     // set the content-type of req.product and send the product photo
-    res.set("Content-Type", req.product.photo.contentType);
-    return res.send(req.product.photo.data);
+    const Arrray = [];
+    // req.product.photo.data.forEach((el,index) => {
+    //   const readFile = fs.readFileSync(el);
+    //   Arrray.push(readFile);
+    // })
+
+    res.set("Content-Type", "image/*");
+    
+    return res.send(fs.readFileSync(filePath));
   }
   next();
 };
@@ -301,7 +336,7 @@ exports.productListSearch = (req, res) => {
           message: err.message,
         });
       }
-    }).select("-photo");
+    })
   }
 };
 

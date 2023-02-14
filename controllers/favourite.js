@@ -57,7 +57,7 @@ exports.subFavouriteProduct = (req, res) => {
 exports.listAllFavourite = (req, res) => {
   Favourite.findOne({ user: req.profile._id })
     .populate("user", "name")
-    .populate("products","-photo")
+    .populate("products")
     .exec((err, data) => {
       if (!err) {
         res.status(200).json(data);

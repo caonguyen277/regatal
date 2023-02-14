@@ -42,7 +42,7 @@ router.get("/relatedBranch/:productId", listBranchRelated);
 router.get("/categories", listAllCategories);
 router.get("/branches", listAllBranches);
 router.post("/by/search", listBySearch);
-router.get("/product/photo/:productId", photoProduct);
+router.get("/product/photo/:productId/:path", photoProduct);
 router.get("/statisticalProduct/:month/:userId",requireSignin, isAdmin,StatisticalProduct);
 router.param("userId", userById);
 // whenever there's a 'productId' in the route parameter, call the productById method
