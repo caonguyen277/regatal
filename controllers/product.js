@@ -299,7 +299,7 @@ exports.listBySearch = (req, res) => {
 
 exports.photoProduct = (req, res, next) => {
   // Check to see if photo exists in req.product
-  const filePath = `.//img//${req.params.path}`;
+  const filePath = `img//${req.params.path}`;
   console.log(filePath);
   if (req.product.photo.data) {
     // set the content-type of req.product and send the product photo
