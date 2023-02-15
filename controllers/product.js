@@ -30,6 +30,7 @@ exports.readProduct = (req, res) => {
 
 exports.createProduct = (req, res) => {
   let form = new formidable.IncomingForm();
+  form.uploadDir = "./img";
   form.keepExtensions = true;
   form.multiples = true;
   // form.maxFieldsSize = 10 * 1024 * 1024;
@@ -298,7 +299,7 @@ exports.listBySearch = (req, res) => {
 
 exports.photoProduct = (req, res, next) => {
   // Check to see if photo exists in req.product
-  const filePath = `./uploads/${req.params.path}`;
+  const filePath = `.//img//${req.params.path}`;
   console.log(filePath);
   if (req.product.photo.data) {
     // set the content-type of req.product and send the product photo
