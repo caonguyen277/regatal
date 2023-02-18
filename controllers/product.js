@@ -303,7 +303,7 @@ exports.photoProduct = (req, res, next) => {
   console.log(filePath);
   if (req.product.photo.data) {
     // set the content-type of req.product and send the product photo
-    const Arrray = [];
+    // const Arrray = [];
     // req.product.photo.data.forEach((el,index) => {
     //   const readFile = fs.readFileSync(el);
     //   Arrray.push(readFile);
